@@ -2,5 +2,6 @@ rootProject.name = "covidapi"
 
 include(
   "covid-core",
-  "covid-cli"
+  "covid-cli",
+  "covid-web"
 )
