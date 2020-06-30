@@ -14,7 +14,7 @@ subprojects {
   }
 
   dependencies {
-    val koin_version = "2.1.5"
+    val koin_version = "2.1.6"
     
     // Align versions of all Kotlin components
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
@@ -23,7 +23,14 @@ subprojects {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     
     implementation("io.reactivex.rxjava3:rxkotlin:3.0.0")
+
     implementation("org.koin:koin-core:$koin_version")
+
+    // this is better suited in the data module, where ever that ends up.
+    implementation("io.github.soc:directories:12")
+
+    implementation("io.github.microutils:kotlin-logging:1.8.0.1")
+    implementation("ch.qos.logback:logback-classic:1.2.3")
     
     implementation("com.fasterxml.jackson.core:jackson-databind:2.11.1")
     
