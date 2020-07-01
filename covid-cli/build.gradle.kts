@@ -1,3 +1,7 @@
+///////////////////////////
+// covid-cli build file. //
+///////////////////////////
+
 plugins {
     // Apply the Kotlin JVM plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm")
@@ -10,6 +14,7 @@ plugins {
 
 dependencies {
   implementation(project(":covid-core"))
+  implementation(project(":covid-web"))
 }
 
 application {

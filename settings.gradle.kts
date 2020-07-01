@@ -1,4 +1,4 @@
-rootProject.name = "covidapi"
+rootProject.name = "covid-api"
 
 include(
   "covid-core",

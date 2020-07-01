@@ -1,7 +1,15 @@
+////////////////////////////////////////
+// covid-api project root build file. //
+////////////////////////////////////////
+
 plugins {
   java
   id("org.jetbrains.kotlin.jvm") version "1.3.72" apply false
   id("com.github.ben-manes.versions") version "0.28.0"
+}
+
+allprojects {
+  version = "0.0.1-SNAPSHOT"
 }
 
 subprojects {
