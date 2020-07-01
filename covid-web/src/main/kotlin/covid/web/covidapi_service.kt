@@ -11,7 +11,9 @@ import io.reactivex.rxjava3.core.*
 import mu.*
 
 import covid.core.models.Route
-
+import org.koin.dsl.*
+import retrofit2.adapter.rxjava3.*
+import retrofit2.converter.jackson.*
 
 interface CovidApi {
   @GET("/")
@@ -22,8 +24,8 @@ interface CovidApiService {
   fun base(): Single<Map<String, Route>>
 }
 
-class CovidApiImplementation(
-  val http: Http
+internal class CovidApiServiceImpl(
+  private val http: Http
 ): CovidApiService {
   private val log = KotlinLogging.logger {}
 
@@ -35,6 +37,7 @@ class CovidApiImplementation(
     Retrofit.Builder()
       .baseUrl(url)
       .addConverterFactory(JacksonConverterFactory.create())
+      .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
       .client(client)
       .build()
   }
@@ -50,4 +53,8 @@ class CovidApiImplementation(
   companion object {
     const val url: String = "https://api.covid19api.com/"
   }
+}
+
+val covidApi = module {
+  single<CovidApiService> { CovidApiServiceImpl(get()) }
 }

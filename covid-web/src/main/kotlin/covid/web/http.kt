@@ -1,23 +1,20 @@
 package covid.web
 
-import retrofit2.*
-import retrofit2.adapter.rxjava3.RxJavaCallAdapterFactory
-import retrofit2.converter.jackson.JacksonConverterFactory
-
 import okhttp3.OkHttpClient
 import okhttp3.logging.*
 
 import mu.*
+import org.koin.dsl.*
 
-interface Http: AutoClosable {
+interface Http: AutoCloseable {
   val client: OkHttpClient
   
   fun cleanup()
   
-  fun close() = cleanup()
+  override fun close() = cleanup()
 }
   
-internal object HttpImpl {
+internal object HttpImpl: Http {
   private val log = KotlinLogging.logger {}
   private val httpLogger = object : HttpLoggingInterceptor.Logger {
     override fun log(message: String) {
@@ -28,17 +25,15 @@ internal object HttpImpl {
   private val lazyClient = lazy {
     val httpLog = HttpLoggingInterceptor(httpLogger)
     httpLog.setLevel(HttpLoggingInterceptor.Level.BASIC)
-    
+
     OkHttpClient.Builder()
       .addInterceptor(httpLog)
-      .addConverterFactory(JacksonConverterFactory.create())
-      .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
       .build()
   }
 
-  val client: OkHttpClient by lazyClient
+  override val client: OkHttpClient by lazyClient
 
-  fun cleanup() {
+  override fun cleanup() {
     if (lazyClient.isInitialized()) {
       log.info("Cleaning up Http client.")
       with (lazyClient.value) {
@@ -48,4 +43,8 @@ internal object HttpImpl {
       }
     }
   }
+}
+
+val http = module {
+  single<Http> { HttpImpl }
 }
